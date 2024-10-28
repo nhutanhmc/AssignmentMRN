@@ -1,31 +1,31 @@
 import React, { useEffect, useState } from 'react';
-import { View, FlatList, Text, StyleSheet } from 'react-native';
+import { View, FlatList, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
-const ProductListScreen = () => {
+const ProductListScreen = ({ navigation }) => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
       const token = await AsyncStorage.getItem('token');
-      
       try {
         const response = await axios.get('https://koifishproject-production.up.railway.app/api/products', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-
-        console.log('Products from API:', response.data);
         setProducts(response.data.data);
       } catch (error) {
         console.error('Error fetching products:', error);
       }
     };
-
     fetchProducts();
   }, []);
+
+  const navigateToProductDetail = (product) => {
+    navigation.navigate('ProductDetailScreen', { product });
+  };
 
   return (
     <View style={styles.container}>
@@ -33,9 +33,11 @@ const ProductListScreen = () => {
         data={products}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={styles.productItem}>
-            <Text>{item.productName} - Price: ${item.productPrice}</Text>
-          </View>
+          <TouchableOpacity onPress={() => navigateToProductDetail(item)}>
+            <View style={styles.productItem}>
+              <Text>{item.productName} - Price: ${item.productPrice}</Text>
+            </View>
+          </TouchableOpacity>
         )}
       />
     </View>

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { loginUser } from '../utils/api';
 import axios from 'axios';
 import Modal from 'react-native-modal';
+import { Input, Button } from 'react-native-elements';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -24,7 +25,8 @@ const LoginScreen = ({ navigation }) => {
       const data = await loginUser(email, password);
       await AsyncStorage.setItem('user', JSON.stringify(data.user));
       await AsyncStorage.setItem('token', data.token);
-      
+      await AsyncStorage.setItem('orderDetailIds', JSON.stringify([])); // Tạo mảng orderDetailIds trống
+
       if (data.user.role === "MEMBER") {
         if (data.user.ponds.length === 0) {
           setModalVisible(true); // Hiển thị modal để người dùng nhập thông tin hồ
@@ -70,71 +72,37 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <TextInput
-        style={styles.input}
+      <Input
         placeholder="Email"
         value={email}
         onChangeText={setEmail}
+        leftIcon={{ type: 'material', name: 'email' }}
+        containerStyle={styles.inputContainer}
       />
-      <TextInput
-        style={styles.input}
+      <Input
         placeholder="Password"
         secureTextEntry
         value={password}
         onChangeText={setPassword}
+        leftIcon={{ type: 'material', name: 'lock' }}
+        containerStyle={styles.inputContainer}
       />
-      <Button title="Login" onPress={handleLogin} />
+      <Button
+        title="Login"
+        onPress={handleLogin}
+        buttonStyle={styles.loginButton}
+      />
 
       {/* Modal for creating pond */}
       <Modal isVisible={isModalVisible}>
         <View style={styles.modalContent}>
-          <TextInput
-            style={styles.input}
-            placeholder="Pond Name"
-            value={pondName}
-            onChangeText={setPondName}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Volume"
-            value={volume}
-            onChangeText={setVolume}
-            keyboardType="numeric"
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Depth"
-            value={depth}
-            onChangeText={setDepth}
-            keyboardType="numeric"
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Drain Count"
-            value={drainCount}
-            onChangeText={setDrainCount}
-            keyboardType="numeric"
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Skimmer Count"
-            value={skimmerCount}
-            onChangeText={setSkimmerCount}
-            keyboardType="numeric"
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Pump Capacity"
-            value={pumpCapacity}
-            onChangeText={setPumpCapacity}
-            keyboardType="numeric"
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Image URL"
-            value={imgUrl}
-            onChangeText={setImgUrl}
-          />
+          <Input placeholder="Pond Name" value={pondName} onChangeText={setPondName} />
+          <Input placeholder="Volume" value={volume} onChangeText={setVolume} keyboardType="numeric" />
+          <Input placeholder="Depth" value={depth} onChangeText={setDepth} keyboardType="numeric" />
+          <Input placeholder="Drain Count" value={drainCount} onChangeText={setDrainCount} keyboardType="numeric" />
+          <Input placeholder="Skimmer Count" value={skimmerCount} onChangeText={setSkimmerCount} keyboardType="numeric" />
+          <Input placeholder="Pump Capacity" value={pumpCapacity} onChangeText={setPumpCapacity} keyboardType="numeric" />
+          <Input placeholder="Image URL" value={imgUrl} onChangeText={setImgUrl} />
           <Button title="Create Pond" onPress={handleCreatePond} />
           <Button title="Cancel" onPress={() => setModalVisible(false)} />
         </View>
@@ -144,23 +112,10 @@ const LoginScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 16,
-  },
-  input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 12,
-    paddingHorizontal: 8,
-  },
-  modalContent: {
-    backgroundColor: 'white',
-    padding: 20,
-    borderRadius: 10,
-  },
+  container: { flex: 1, justifyContent: 'center', padding: 16 },
+  inputContainer: { marginBottom: 15 },
+  loginButton: { backgroundColor: '#007bff', borderRadius: 5 },
+  modalContent: { backgroundColor: 'white', padding: 20, borderRadius: 10 },
 });
 
 export default LoginScreen;
