@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Alert } from 'react-native';
+import { View, StyleSheet, Alert, ImageBackground } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { loginUser } from '../utils/api';
 import axios from 'axios';
@@ -71,48 +71,61 @@ const LoginScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Input
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        leftIcon={{ type: 'material', name: 'email' }}
-        containerStyle={styles.inputContainer}
-      />
-      <Input
-        placeholder="Password"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-        leftIcon={{ type: 'material', name: 'lock' }}
-        containerStyle={styles.inputContainer}
-      />
-      <Button
-        title="Login"
-        onPress={handleLogin}
-        buttonStyle={styles.loginButton}
-      />
+    <ImageBackground
+      source={require('../img/pt.jpg')} // Đường dẫn đến ảnh nền của bạn
+      style={styles.backgroundImage}
+    >
+      <View style={styles.overlay}>
+        <Input
+          placeholder="Email"
+          placeholderTextColor="#ffffff" // Màu placeholder trắng
+          value={email}
+          onChangeText={setEmail}
+          leftIcon={{ type: 'material', name: 'email', color: 'white' }} // Màu icon trắng
+          inputStyle={{ color: 'white' }} // Màu chữ trắng
+          leftIconContainerStyle={{ paddingRight: 10 }}
+          containerStyle={styles.inputContainer}
+        />
+        <Input
+          placeholder="Password"
+          placeholderTextColor="#ffffff" // Màu placeholder trắng
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
+          leftIcon={{ type: 'material', name: 'lock', color: 'white' }} // Màu icon trắng
+          inputStyle={{ color: 'white' }} // Màu chữ trắng
+          leftIconContainerStyle={{ paddingRight: 10 }}
+          containerStyle={styles.inputContainer}
+        />
+        <Button
+          title="Login"
+          onPress={handleLogin}
+          buttonStyle={[styles.loginButton, { backgroundColor: '#FF8C00' }]} // Màu cam đậm
+        />
 
-      {/* Modal for creating pond */}
-      <Modal isVisible={isModalVisible}>
-        <View style={styles.modalContent}>
-          <Input placeholder="Pond Name" value={pondName} onChangeText={setPondName} />
-          <Input placeholder="Volume" value={volume} onChangeText={setVolume} keyboardType="numeric" />
-          <Input placeholder="Depth" value={depth} onChangeText={setDepth} keyboardType="numeric" />
-          <Input placeholder="Drain Count" value={drainCount} onChangeText={setDrainCount} keyboardType="numeric" />
-          <Input placeholder="Skimmer Count" value={skimmerCount} onChangeText={setSkimmerCount} keyboardType="numeric" />
-          <Input placeholder="Pump Capacity" value={pumpCapacity} onChangeText={setPumpCapacity} keyboardType="numeric" />
-          <Input placeholder="Image URL" value={imgUrl} onChangeText={setImgUrl} />
-          <Button title="Create Pond" onPress={handleCreatePond} />
-          <Button title="Cancel" onPress={() => setModalVisible(false)} />
-        </View>
-      </Modal>
-    </View>
+
+        {/* Modal for creating pond */}
+        <Modal isVisible={isModalVisible}>
+          <View style={styles.modalContent}>
+            <Input placeholder="Pond Name" value={pondName} onChangeText={setPondName} />
+            <Input placeholder="Volume" value={volume} onChangeText={setVolume} keyboardType="numeric" />
+            <Input placeholder="Depth" value={depth} onChangeText={setDepth} keyboardType="numeric" />
+            <Input placeholder="Drain Count" value={drainCount} onChangeText={setDrainCount} keyboardType="numeric" />
+            <Input placeholder="Skimmer Count" value={skimmerCount} onChangeText={setSkimmerCount} keyboardType="numeric" />
+            <Input placeholder="Pump Capacity" value={pumpCapacity} onChangeText={setPumpCapacity} keyboardType="numeric" />
+            <Input placeholder="Image URL" value={imgUrl} onChangeText={setImgUrl} />
+            <Button title="Create Pond" onPress={handleCreatePond} />
+            <Button title="Cancel" onPress={() => setModalVisible(false)} />
+          </View>
+        </Modal>
+      </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', padding: 16 },
+  backgroundImage: { flex: 1, resizeMode: 'cover' },
+  overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', padding: 16 },
   inputContainer: { marginBottom: 15 },
   loginButton: { backgroundColor: '#007bff', borderRadius: 5 },
   modalContent: { backgroundColor: 'white', padding: 20, borderRadius: 10 },

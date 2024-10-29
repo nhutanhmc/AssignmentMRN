@@ -49,18 +49,18 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">
-        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={TabNavigator} options={{ headerShown: false }} />
-        <Stack.Screen name="Detail" component={DetailScreen} /> 
-        <Stack.Screen name="KoiList" component={KoiListScreen} />
-        <Stack.Screen name="KoiDetail" component={KoiDetailScreen} />
-        <Stack.Screen name="Schedule" component={ScheduleScreen} />
-        <Stack.Screen name="CreateSchedule" component={CreateScheduleScreen} />
-        <Stack.Screen name="ShowSchedule" component={ShowScheduleScreen} />
-        <Stack.Screen name="MeasureDataScreen" component={MeasureDataScreen} />
-        <Stack.Screen name="ProductListScreen" component={ProductListScreen} options={{ title: 'Product List' }} />
-        <Stack.Screen name="ProductDetailScreen" component={ProductDetailScreen} options={{ title: 'Product Detail' }} />
-        <Stack.Screen name="OrderScreen" component={OrderScreen} options={{ title: 'Your Cart' }} />
+        <Stack.Screen name="Detail" component={DetailScreen} options={{ headerShown: false }} /> 
+        <Stack.Screen name="KoiList" component={KoiListScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="KoiDetail" component={KoiDetailScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="Schedule" component={ScheduleScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="CreateSchedule" component={CreateScheduleScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="ShowSchedule" component={ShowScheduleScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="MeasureDataScreen" component={MeasureDataScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="ProductListScreen" component={ProductListScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="ProductDetailScreen" component={ProductDetailScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="OrderScreen" component={OrderScreen} options={{ headerShown: false }} />
         <Stack.Screen 
           name="BillScreen" 
           component={BillScreen} 

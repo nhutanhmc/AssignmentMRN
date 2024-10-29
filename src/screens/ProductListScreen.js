@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, FlatList, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, FlatList, Text, StyleSheet, TouchableOpacity, Image, Button } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
@@ -35,7 +35,10 @@ const ProductListScreen = ({ navigation }) => {
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => navigateToProductDetail(item)}>
             <View style={styles.productItem}>
-              <Text>{item.productName} - Price: ${item.productPrice}</Text>
+              <Image source={{ uri: item.image }} style={styles.productImage} />
+              <View style={styles.productInfo}>
+                <Text style={styles.productName}>{item.productName} - Price: ${item.productPrice}</Text>
+              </View>
             </View>
           </TouchableOpacity>
         )}
@@ -50,9 +53,28 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   productItem: {
-    padding: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
+  },
+  productImage: {
+    width: 60,
+    height: 60,
+    borderRadius: 8,
+    marginRight: 10,
+  },
+  productInfo: {
+    flex: 1,
+  },
+  productName: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  productPrice: {
+    fontSize: 14,
+    color: '#888',
   },
 });
 

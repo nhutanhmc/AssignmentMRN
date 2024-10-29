@@ -13,12 +13,12 @@ const PondStack = createStackNavigator();
 const PondStackNavigator = () => {
   return (
     <PondStack.Navigator>
-      <PondStack.Screen name="PondList" component={PondListScreen} options={{ title: 'Ponds' }} />
-      <PondStack.Screen name="KoiList" component={KoiListScreen} options={{ title: 'Koi List' }} />
-      <PondStack.Screen name="KoiDetail" component={KoiDetailScreen} options={{ title: 'Koi Detail' }} />
-      <PondStack.Screen name="Schedule" component={ScheduleScreen} options={{ title: 'Schedule' }} />
-      <PondStack.Screen name="CreateSchedule" component={CreateScheduleScreen} options={{ title: 'Create Schedule' }} />
-      <PondStack.Screen name="ShowSchedule" component={ShowScheduleScreen} options={{ title: 'Show Schedule' }} />
+      <PondStack.Screen name="PondList" component={PondListScreen} options={{ headerShown: false }} />
+      <PondStack.Screen name="KoiList" component={KoiListScreen} options={{ headerShown: false }} />
+      <PondStack.Screen name="KoiDetail" component={KoiDetailScreen} options={{ headerShown: false }} />
+      <PondStack.Screen name="Schedule" component={ScheduleScreen} options={{ headerShown: false }} />
+      <PondStack.Screen name="CreateSchedule" component={CreateScheduleScreen} options={{ headerShown: false }} />
+      <PondStack.Screen name="ShowSchedule" component={ShowScheduleScreen} options={{ headerShown: false }} />
     </PondStack.Navigator>
   );
 };
