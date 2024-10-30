@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, FlatList, StyleSheet, Alert } from 'react-native';
+import { View, Text, Button, FlatList, StyleSheet, Alert, TextInput, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 const OrderScreen = ({ navigation }) => {
   const [orderDetails, setOrderDetails] = useState([]);
   const [orderDetailIds, setOrderDetailIds] = useState([]);
+  const [quantities, setQuantities] = useState({});
 
   const fetchOrderDetails = async () => {
     try {
@@ -22,8 +23,41 @@ const OrderScreen = ({ navigation }) => {
         storedOrderDetailIds.includes(detail.id)
       );
       setOrderDetails(filteredDetails);
+
+      // Initialize quantities with current quantities
+      const initialQuantities = {};
+      filteredDetails.forEach(detail => {
+        initialQuantities[detail.id] = detail.quantity;
+      });
+      setQuantities(initialQuantities);
     } catch (error) {
       console.error('Error fetching order details:', error);
+    }
+  };
+
+  const handleUpdateQuantity = async (orderDetailId, productId) => {
+    const token = await AsyncStorage.getItem('token');
+    const newQuantity = quantities[orderDetailId];
+
+    if (newQuantity <= 0) {
+      Alert.alert('Error', 'Quantity must be greater than 0');
+      return;
+    }
+
+    try {
+      await axios.put(
+        `https://koifishproject-production.up.railway.app/api/order-details/${orderDetailId}`,
+        {
+          product: { id: productId },
+          quantity: newQuantity
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      Alert.alert('Success', 'Order detail updated successfully');
+      fetchOrderDetails(); // Refresh the order details
+    } catch (error) {
+      console.error('Error updating order detail:', error);
+      Alert.alert('Error', 'Failed to update order detail');
     }
   };
 
@@ -73,9 +107,24 @@ const OrderScreen = ({ navigation }) => {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.orderItem}>
-            <Text>{item.product.productName}</Text>
-            <Text>Quantity: {item.quantity}</Text>
-            <Text>Price: ${item.priceOrderDetail}</Text>
+            <Image source={{ uri: item.product.image }} style={styles.productImage} />
+            <View style={styles.detailContainer}>
+              <Text>{item.product.productName}</Text>
+              <View style={styles.quantityContainer}>
+                <TextInput
+                  style={styles.quantityInput}
+                  keyboardType="numeric"
+                  value={quantities[item.id]?.toString()}
+                  onChangeText={(text) => setQuantities({ ...quantities, [item.id]: parseInt(text) || 0 })}
+                />
+                <Button
+                  title="Add"
+                  onPress={() => handleUpdateQuantity(item.id, item.product.id)}
+                  style={styles.addButton}
+                />
+              </View>
+              <Text>Price: ${item.priceOrderDetail}</Text>
+            </View>
           </View>
         )}
       />
@@ -88,7 +137,31 @@ const OrderScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
   title: { fontSize: 24, fontWeight: 'bold', marginBottom: 20, textAlign: 'center' },
-  orderItem: { padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' },
+  orderItem: { 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    padding: 10, 
+    borderBottomWidth: 1, 
+    borderBottomColor: '#ccc' 
+  },
+  detailContainer: { flex: 1, paddingLeft: 10 },
+  productImage: { width: 60, height: 60, borderRadius: 5 },
+  quantityContainer: { 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    justifyContent: 'space-between' 
+  },
+  quantityInput: { 
+    borderBottomWidth: 1, 
+    marginRight: 10, 
+    paddingHorizontal: 5, 
+    width: 50, 
+    textAlign: 'center' 
+  },
+  addButton: { 
+    flex: 1, 
+    alignSelf: 'flex-end' 
+  },
 });
 
 export default OrderScreen;
