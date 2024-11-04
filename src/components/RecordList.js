@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, FlatList, Button, StyleSheet } from 'react-native';
 
-const RecordList = ({ records, isLoading, openModal }) => (
+const RecordList = ({ records = [], isLoading = false, openModal }) => (
   <View style={styles.recordContainer}>
     <Text style={styles.recordTitle}>Records</Text>
     <Button title="+" onPress={openModal} />

@@ -4,7 +4,7 @@ import { Picker } from '@react-native-picker/picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
-const UpdateKoiModal = ({ isVisible, closeModal, koi = {}, navigation }) => {
+const UpdateKoiModal = ({ isVisible = false, closeModal, koi = {}, navigation }) => {
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
   const [sex, setSex] = useState('');
@@ -34,13 +34,6 @@ const UpdateKoiModal = ({ isVisible, closeModal, koi = {}, navigation }) => {
   }, [koi]);
 
   const handleUpdateKoi = async () => {
-    // Kiểm tra định dạng ngày
-    const datePattern = /^\d{4}-\d{2}-\d{2}$/;
-    if (!datePattern.test(inPondSince)) {
-      Alert.alert('Invalid Date Format', 'Please enter the date in yyyy-mm-dd format.');
-      return;
-    }
-
     const token = await AsyncStorage.getItem('token');
     const updatedKoiData = {
       name,

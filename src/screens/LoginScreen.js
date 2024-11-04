@@ -63,7 +63,7 @@ const LoginScreen = ({ navigation }) => {
         },
       });
       setModalVisible(false); // Đóng modal
-      navigation.navigate('Ponds'); // Điều hướng đến tab "Ponds"
+      navigation.navigate('Home'); // Điều hướng đến tab "Ponds"
     } catch (error) {
       console.error('Error creating pond:', error);
       Alert.alert('Error', 'Failed to create pond.');

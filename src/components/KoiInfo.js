@@ -1,13 +1,14 @@
+// src/components/KoiInfo.js
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Card, Text, Image, Divider } from 'react-native-elements';
 
-const KoiInfo = ({ koi }) => (
+const KoiInfo = ({ koi = { name: 'Unknown', age: 0, sex: 'Unknown', category: 'Unknown', purchasePrice: 0, status: 'Unknown', origin: 'Unknown', breed: 'Unknown', length: 0, imgUrl: '' } }) => (
   <Card containerStyle={styles.card}>
     <Image 
       source={{ uri: koi.imgUrl }} 
       style={styles.image} 
-      PlaceholderContent={<Text>Loading...</Text>} // Placeholder khi ảnh đang tải
+      PlaceholderContent={<Text>Loading...</Text>}
     />
     <Card.Title style={styles.title}>{koi.name}</Card.Title>
     <Divider style={styles.divider} />
@@ -15,7 +16,6 @@ const KoiInfo = ({ koi }) => (
       <Text style={styles.infoText}>Age: <Text style={styles.infoValue}>{koi.age}</Text></Text>
       <Text style={styles.infoText}>Sex: <Text style={styles.infoValue}>{koi.sex}</Text></Text>
       <Text style={styles.infoText}>Category: <Text style={styles.infoValue}>{koi.category}</Text></Text>
-      <Text style={styles.infoText}>In Pond Since: <Text style={styles.infoValue}>{koi.inPondSince}</Text></Text>
       <Text style={styles.infoText}>Purchase Price: <Text style={styles.infoValue}>${koi.purchasePrice}</Text></Text>
       <Text style={styles.infoText}>Status: <Text style={styles.infoValue}>{koi.status}</Text></Text>
       <Text style={styles.infoText}>Origin: <Text style={styles.infoValue}>{koi.origin}</Text></Text>

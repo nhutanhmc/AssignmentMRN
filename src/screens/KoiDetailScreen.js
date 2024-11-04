@@ -8,7 +8,7 @@ import RecordModal from '../components/RecordModal';
 import UpdateKoiModal from '../components/UpdateKoiModal';
 
 const KoiDetailScreen = ({ route, navigation }) => {
-  const { koi } = route.params;
+  const { koi = {} } = route.params;
   const [records, setRecords] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isModalVisible, setModalVisible] = useState(false);
